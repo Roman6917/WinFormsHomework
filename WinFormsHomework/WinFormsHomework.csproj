@@ -66,6 +66,14 @@
   <ItemGroup>
     <Folder Include="obj\Debug" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\Pictures\Task.png">
+      <Link>Docs\Task.png</Link>
+    </None>
+    <None Include="..\..\..\Pictures\WinFormHomeworkResults.jpg">
+      <Link>Docs\WinFormHomeworkResults.jpg</Link>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
          Other similar extension points exist, see Microsoft.Common.targets.
