@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Quadrilateral_Task2.Properties
+namespace WinFormsHomework.Properties
 {
 
 

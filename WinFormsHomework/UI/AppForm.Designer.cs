@@ -1,8 +1,9 @@
-﻿using Quadrilateral_Task2.POCO;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
+using WinFormsHomework.POCO;
 
-namespace Quadrilateral_Task2
+namespace WinFormsHomework.UI
 {
     partial class AppForm
     {
@@ -130,11 +131,11 @@ namespace Quadrilateral_Task2
             // 
             // panelMain
             // 
-            this.panelMain.BackColor = System.Drawing.Color.White;
-            this.panelMain.Location = new System.Drawing.Point(39, 97);
+            this.panelMain.BackColor = Color.FromArgb(136, 231, 133);
+            this.panelMain.Location = new System.Drawing.Point(0, 35);
             this.panelMain.Name = "panelMain";
-            this.panelMain.Size = new System.Drawing.Size(713, 313);
-            this.panelMain.TabIndex = 1;
+            this.panelMain.Size = new System.Drawing.Size(800, 500);
+            this.panelMain.TabIndex = 4;
             this.panelMain.Click += new System.EventHandler(this.PanelMain_Click);
             this.panelMain.DoubleClick += new System.EventHandler(this.PanelMain_DoubleClick);
             // 
@@ -143,20 +144,20 @@ namespace Quadrilateral_Task2
             this.labelCounter.AutoSize = true;
             this.labelCounter.BackColor = System.Drawing.Color.White;
             this.labelCounter.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelCounter.Location = new System.Drawing.Point(151, 48);
+            this.labelCounter.Location = new System.Drawing.Point(151, 35);
             this.labelCounter.Name = "labelCounter";
-            this.labelCounter.Size = new System.Drawing.Size(520, 25);
-            this.labelCounter.TabIndex = 2;
-            this.labelCounter.Text = "Додайте ще 4 точки щоб утворити чотириктуник";
+            this.labelCounter.Size = new System.Drawing.Size(20, 25);
+            this.labelCounter.TabIndex = 4;
+            this.labelCounter.Text = "Додайте 4 точки щоб утворити чотириктуник";
             // 
             // buttonPolygonColor
             // 
             this.buttonPolygonColor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.buttonPolygonColor.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonPolygonColor.ForeColor = System.Drawing.Color.Black;
-            this.buttonPolygonColor.Location = new System.Drawing.Point(867, 300);
+            this.buttonPolygonColor.Location = new System.Drawing.Point(800, 290);
             this.buttonPolygonColor.Name = "buttonPolygonColor";
-            this.buttonPolygonColor.Size = new System.Drawing.Size(105, 93);
+            this.buttonPolygonColor.Size = new System.Drawing.Size(250, 50);
             this.buttonPolygonColor.TabIndex = 4;
             this.buttonPolygonColor.Text = "Змінити колір";
             this.buttonPolygonColor.UseVisualStyleBackColor = false;
@@ -180,21 +181,22 @@ namespace Quadrilateral_Task2
             // 
             this.labelInfo.AutoSize = true;
             this.labelInfo.BackColor = System.Drawing.Color.White;
-            this.labelInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelInfo.Location = new System.Drawing.Point(58, 458);
+            this.labelInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular
+                , System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelInfo.Location = new System.Drawing.Point(0, 501);
             this.labelInfo.Name = "labelInfo";
-            this.labelInfo.Size = new System.Drawing.Size(1010, 50);
-            this.labelInfo.TabIndex = 6;
+            this.labelInfo.Size = new System.Drawing.Size(850, 50);
+            this.labelInfo.TabIndex = 4;
             this.labelInfo.Text = "Нажміть лівою кнопокю мишки два рази на полотні, щоб додати точку(за або проти го" +
     "динникової стрілки)\r\nЩоб вибрати фігуру(якщо ви її вже створили), клацніть на не" +
     "ї правою кнопкою миші";
             // 
             // buttonCancel
             // 
-            this.buttonCancel.BackColor = System.Drawing.Color.AliceBlue;
-            this.buttonCancel.Location = new System.Drawing.Point(996, 276);
+            this.buttonCancel.BackColor = Color.FromArgb(127, 255, 126);
+            this.buttonCancel.Location = new System.Drawing.Point(1040, 290);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(236, 49);
+            this.buttonCancel.Size = new System.Drawing.Size(246, 49);
             this.buttonCancel.TabIndex = 9;
             this.buttonCancel.Text = "Відмінити";
             this.buttonCancel.UseVisualStyleBackColor = false;
@@ -204,15 +206,15 @@ namespace Quadrilateral_Task2
             // labelFigureChecked
             // 
             this.labelFigureChecked.AutoSize = true;
-            this.labelFigureChecked.BackColor = System.Drawing.Color.White;
+            this.labelFigureChecked.BackColor = Color.FromArgb(255, 241, 174);
             this.labelFigureChecked.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelFigureChecked.Location = new System.Drawing.Point(758, 82);
+            this.labelFigureChecked.Location = new System.Drawing.Point(800, 82);
             this.labelFigureChecked.Name = "labelFigureChecked";
             this.labelFigureChecked.Size = new System.Drawing.Size(474, 200);
             this.labelFigureChecked.TabIndex = 10;
-            this.labelFigureChecked.Text = "Ви вибрали фігуру\r\n\r\nЩоб пеерсувати її клацніть правою кнопокю\r\nмиші один раз в т" +
-    "очку, куди бажаєте \r\nпересунути(на полотні)\r\n\r\nЩоб змінити колір нажміть кнопку " +
-    "змінити колір\r\n\r\n";
+            this.labelFigureChecked.Text = "Ви вибрали фігуру\r\n\r\nЩоб пересувати її клацніть правою кнопкою\r\nмиші один раз в точку," +
+                                           " куди бажаєте \r\nпересунути(на полотні)\r\n\r\nЩоб змінити колір нажміть кнопку " +
+    "змінити колір\r\n                        \r\n";
             this.labelFigureChecked.Visible = false;
             // 
             // informationMenu
@@ -226,7 +228,7 @@ namespace Quadrilateral_Task2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Navy;
+            this.BackColor = Color.FromArgb(255, 225, 208);
             this.ClientSize = new System.Drawing.Size(1269, 570);
             this.Controls.Add(this.labelFigureChecked);
             this.Controls.Add(this.buttonCancel);
@@ -259,13 +261,13 @@ namespace Quadrilateral_Task2
             labelCounter.Visible = true;
             buttonPolygonColor.Visible = false;
             labelCounter.Text = "Додайте ще 4 точки щоб утворити чотириктуник";
-            quadrilaterals = new List<Quadrilateral>();
-            quadrilateralToDraw = new Quadrilateral();
-            activeQquadrilateral = null;
+            _quadrilaterals = new List<Quadrilateral>();
+            _quadrilateralToDraw = new Quadrilateral();
+            _activeQquadrilateral = null;
             buttonCancel.Visible = false;
             labelFigureChecked.Visible = false;
-            isFigureChecked = false;
-            doubleClickCounter = 0;
+            _isFigureChecked = false;
+            _doubleClickCounter = 0;
         }
 
         #endregion

@@ -1,14 +1,14 @@
-﻿using Quadrilateral_Task2.BL;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using WinFormsHomework.BL;
 
-namespace Quadrilateral_Task2.Utils
+namespace WinFormsHomework.Utils
 {
     public static class UI
     {
         #region infromation message 
-        private const string INFORMATION_MESSAGE = "Загальне :\n" +
+        private const string InformationMessage = "Загальне :\n" +
                 "\t1) Для того щоб намалювати чотирикутник, клікніть два\n" +
                 "\tрази мишкою" +
                 "на полотні(це додасть одну його точку).\n" +
@@ -71,13 +71,13 @@ namespace Quadrilateral_Task2.Utils
 
         public static OpenFileDialog CreateOpenFileDialog()
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog
+            var openFileDialog = new OpenFileDialog
             {
-                Filter = "(*.xml)|*.xml",
+                Filter = @"(*.xml)|*.xml",
                 RestoreDirectory = true,
                 CheckFileExists = true,
                 CheckPathExists = true,
-                Title = "Choose file"
+                Title = @"Choose file"
             };
 
             return openFileDialog;
@@ -85,12 +85,12 @@ namespace Quadrilateral_Task2.Utils
 
         public static SaveFileDialog CreateSaveFileDialog()
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog
+            var saveFileDialog = new SaveFileDialog
             {
                 RestoreDirectory = true,
                 DefaultExt = "xml",
                 CheckPathExists = true,
-                Title = "Save your work",
+                Title = @"Save your work",
                 ValidateNames = true
             };
 
@@ -99,25 +99,26 @@ namespace Quadrilateral_Task2.Utils
 
         public static DialogResult CreateInformationWindow()
         {
-            string caption = "Information box";
-            MessageBoxButtons buttons = MessageBoxButtons.OK;
+            var caption = "Information box";
+            const MessageBoxButtons buttons = MessageBoxButtons.OK;
 
-            return MessageBox.Show(INFORMATION_MESSAGE, caption, buttons);
+            return MessageBox.Show(InformationMessage, caption, buttons);
         }
 
-        public delegate void ShapesMenuDropDown_Click(object sender, EventArgs e);
+        public delegate void ShapesMenuDropDownClick(object sender, EventArgs e);
 
-        public static void LoadShapesMenu(ToolStripMenuItem toolStripMenuItem, ShapesMenuDropDown_Click function)
+        public static void LoadShapesMenu(ToolStripMenuItem toolStripMenuItem, ShapesMenuDropDownClick function)
         {
-            var figures = QuadrilateralBL.LoadFiguresList();
+            var figures = QuadrilateralBl.LoadFiguresList();
             toolStripMenuItem.DropDownItems.Clear();
-            List<ToolStripMenuItem> ul = new List<ToolStripMenuItem>();
+            var ul = new List<ToolStripMenuItem>();
             foreach (var item in figures)
             {
-                ToolStripMenuItem li = new ToolStripMenuItem(item);
+                var li = new ToolStripMenuItem(item);
                 li.Click += new EventHandler(function);
                 ul.Add(li);
             }
+            // ReSharper disable once CoVariantArrayConversion
             toolStripMenuItem.DropDownItems.AddRange(ul.ToArray());
         }
     }

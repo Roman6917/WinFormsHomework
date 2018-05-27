@@ -1,84 +1,88 @@
-﻿using Quadrilateral_Task2.POCO;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
-using Quadrilateral_Task2.Utils;
+using WinFormsHomework.POCO;
+using WinFormsHomework.Utils;
+using static WinFormsHomework.BL.QuadrilateralBl;
 
-namespace Quadrilateral_Task2.BL
+namespace WinFormsHomework.BL
 {
-    public class QuadrilateralBL
-    {
-        public static List<string> LoadFiguresList()
-        {
-            List<string> files = null;
-            string path = IOUtils.GetDataDirectoryPath();
-            if (Directory.Exists(path))
-            {
-                files = new List<string>(Directory.GetFiles(path).Where(p => Path.GetExtension(p) == ".xml").Select(q => Path.GetFileName(q)));
-            }
+	public static class QuadrilateralBl
+	{
+		public static IEnumerable<string> LoadFiguresList()
+		{
+			List<string> files = null;
+			var path = IOUtils.GetDataDirectoryPath();
+			if (Directory.Exists(path))
+			{
+				files = new List<string>(Directory.GetFiles(path).Where(p => Path.GetExtension(p) == ".xml")
+					.Select(Path.GetFileName));
+			}
 
-            return files;
-        }
+			return files;
+		}
 
-        public static List<Quadrilateral> LoadFigures(string fileName)
-        {
-            string path = IOUtils.GetDataDirectoryPath() + "\\" + fileName;
-            if (!File.Exists(path))
-            {
-                throw new IOException(string.Format("can not find file : {0}", path));
-            }
-            List<Quadrilateral> quadrilaterals = QuadrilateralBL.DeserializeList(path);
+		public static IEnumerable<Quadrilateral> LoadFigures(string fileName)
+		{
+			var path = IOUtils.GetDataDirectoryPath() + "\\" + fileName;
+			if (!File.Exists(path))
+			{
+				throw new IOException($"can not find file : {path}");
+			}
 
-            return quadrilaterals;
-        }
+			var quadrilaterals = DeserializeList(path);
 
-        public static void SerializeList(List<Quadrilateral> quadrilaterals, string path)
-        {
-            XmlSerializer formatter = new XmlSerializer(typeof(List<Quadrilateral>));
-            quadrilaterals.ForEach(p => p.RgbaColor = p.Color.ToArgb());
-            using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
-            {
-                formatter.Serialize(fs, quadrilaterals);
-            }
-        }
+			return quadrilaterals;
+		}
 
-        public static List<Quadrilateral> DeserializeList(string path)
-        {
-            XmlSerializer formatter = new XmlSerializer(typeof(List<Quadrilateral>));
-            List<Quadrilateral> quadrilaterals = null;
-            using (FileStream fs = new FileStream(path, FileMode.Open))
-            {
-                quadrilaterals = (List<Quadrilateral>)formatter.Deserialize(fs);
-            }
+		public static void SerializeList(List<Quadrilateral> quadrilaterals, string path)
+		{
+			var formatter = new XmlSerializer(typeof(List<Quadrilateral>));
+			quadrilaterals.ForEach(p => p.RgbaColor = p.Color.ToArgb());
+			using (var fs = new FileStream(path, FileMode.OpenOrCreate))
+			{
+				formatter.Serialize(fs, quadrilaterals);
+			}
+		}
 
-            if (quadrilaterals == null)
-            {
-                throw new ApplicationException(string.Format("cannot deserialize file {0}", path));
-            }
-            quadrilaterals.ForEach(p => p.Color = Color.FromArgb(p.RgbaColor));
+		public static List<Quadrilateral> DeserializeList(string path)
+		{
+			var formatter = new XmlSerializer(typeof(List<Quadrilateral>));
+			List<Quadrilateral> quadrilaterals;
+			using (var fs = new FileStream(path, FileMode.Open))
+			{
+				quadrilaterals = (List<Quadrilateral>) formatter.Deserialize(fs);
+			}
 
-            return quadrilaterals;
-        }
+			if (quadrilaterals == null)
+			{
+				throw new ApplicationException($"cannot deserialize file {path}");
+			}
 
-        public static Quadrilateral MoveToPoint(Quadrilateral quadrilateral, Point newCenter)
-        {
-            Point previouseCenter = quadrilateral.Center();
-            int xShifting = previouseCenter.X - newCenter.X;
-            int yShifting = previouseCenter.Y - newCenter.Y;
+			quadrilaterals.ForEach(p => p.Color = Color.FromArgb(p.RgbaColor));
 
-            var points = quadrilateral.ToArray();
-            for (int i = 0; i < points.Count(); i++)
-            {
-                points[i].X -= xShifting;
-                points[i].Y -= yShifting;
-            }
-            quadrilateral.Points = points.ToList();
+			return quadrilaterals;
+		}
 
-            return quadrilateral;
-        }
+		public static Quadrilateral MoveToPoint(Quadrilateral quadrilateral, Point newCenter)
+		{
+			var previouseCenter = quadrilateral.Center();
+			var xShifting = previouseCenter.X - newCenter.X;
+			var yShifting = previouseCenter.Y - newCenter.Y;
 
-    }
+			var points = quadrilateral.ToArray();
+			for (var i = 0; i < points.Length; i++)
+			{
+				points[i].X -= xShifting;
+				points[i].Y -= yShifting;
+			}
+
+			quadrilateral.Points = points.ToList();
+
+			return quadrilateral;
+		}
+	}
 }

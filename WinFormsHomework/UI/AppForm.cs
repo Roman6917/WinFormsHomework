@@ -1,146 +1,148 @@
-﻿using Quadrilateral_Task2.BL;
-using Quadrilateral_Task2.POCO;
-using Quadrilateral_Task2.Utils;
-using System;
-using System.Drawing;
-using System.Windows.Forms;
+﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Windows.Forms;
+using WinFormsHomework.BL;
+using WinFormsHomework.POCO;
+using WinFormsHomework.Utils;
 
-namespace Quadrilateral_Task2
+namespace WinFormsHomework.UI
 {
-    public partial class AppForm : Form
-    {
-        private Graphics graphics;
-        private Quadrilateral quadrilateralToDraw;
-        private Quadrilateral activeQquadrilateral;
-        private List<Quadrilateral> quadrilaterals;
-        private bool isFigureChecked;
-        private static int doubleClickCounter;
+	public partial class AppForm : Form
+	{
+		private readonly Graphics _graphics;
+		private Quadrilateral _quadrilateralToDraw;
+		private Quadrilateral _activeQquadrilateral;
+		private List<Quadrilateral> _quadrilaterals;
+		private bool _isFigureChecked;
+		private static int _doubleClickCounter;
 
-        public AppForm()
-        {
-            InitializeComponent();
-            graphics = panelMain.CreateGraphics();
-            quadrilaterals = new List<Quadrilateral>();
-            quadrilateralToDraw = new Quadrilateral();
-            isFigureChecked = false;
-            doubleClickCounter = 0;
-        }
+		public AppForm()
+		{
+			InitializeComponent();
+			_graphics = panelMain.CreateGraphics();
+			_quadrilaterals = new List<Quadrilateral>();
+			_quadrilateralToDraw = new Quadrilateral();
+			_isFigureChecked = false;
+			_doubleClickCounter = 0;
+		}
 
-        private void New_Click(object sender, EventArgs e)
-        {
-            Reset();
-        }
+		private void New_Click(object sender, EventArgs e)
+		{
+			Reset();
+		}
 
-        private void Open_Click(object sender, EventArgs e)
-        {
-            openFileDialog1 = UI.CreateOpenFileDialog();
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-                Reset();
-                quadrilaterals = QuadrilateralBL.DeserializeList(openFileDialog1.FileName);
-                Graphic.Redraw(panelMain, graphics, quadrilaterals);
-            }
-        }
+		private void Open_Click(object sender, EventArgs e)
+		{
+			openFileDialog1 = Utils.UI.CreateOpenFileDialog();
+			if (openFileDialog1.ShowDialog() == DialogResult.OK)
+			{
+				Reset();
+				_quadrilaterals = QuadrilateralBl.DeserializeList(openFileDialog1.FileName);
+				Graphic.Redraw(panelMain, _graphics, _quadrilaterals);
+			}
+		}
 
-        private void Save_Click(object sender, EventArgs e)
-        {
-            saveFileDialog1 = UI.CreateSaveFileDialog();
+		private void Save_Click(object sender, EventArgs e)
+		{
+			saveFileDialog1 = Utils.UI.CreateSaveFileDialog();
 
-            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-                QuadrilateralBL.SerializeList(quadrilaterals, saveFileDialog1.FileName);
-            }
-        }
+			if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+			{
+				QuadrilateralBl.SerializeList(_quadrilaterals, saveFileDialog1.FileName);
+			}
+		}
 
-        private void PanelMain_DoubleClick(object sender, EventArgs e)
-        {
-            MouseEventArgs mouseEvent = e as MouseEventArgs;
-            if (mouseEvent.Button == MouseButtons.Left)
-            {
-                Point point = new Point(mouseEvent.Location.X, mouseEvent.Location.Y);
-                if (quadrilateralToDraw.AddPoint(point) == false && doubleClickCounter == 3)
-                {
-                    quadrilaterals.Add(quadrilateralToDraw);
-                    quadrilateralToDraw = new Quadrilateral();
-                    Graphic.Redraw(panelMain, graphics, quadrilaterals);
-                    doubleClickCounter = 0;
-                }
-                else
-                {
-                    doubleClickCounter++;
-                }
+		private void PanelMain_DoubleClick(object sender, EventArgs e)
+		{
+			var mouseEvent = e as MouseEventArgs;
+			if (mouseEvent != null && mouseEvent.Button == MouseButtons.Left)
+			{
+				var point = new Point(mouseEvent.Location.X, mouseEvent.Location.Y);
+				if (_quadrilateralToDraw.AddPoint(point) == false && _doubleClickCounter == 3)
+				{
+					_quadrilaterals.Add(_quadrilateralToDraw);
+					_quadrilateralToDraw = new Quadrilateral();
+					Graphic.Redraw(panelMain, _graphics, _quadrilaterals);
+					_doubleClickCounter = 0;
+				}
+				else
+				{
+					_doubleClickCounter++;
+				}
 
-                UI.SetTextToLabel(labelCounter, string.Format("Додайте ще {0} точки щоб утворити {1}-кутник ", Quadrilateral.SIZE - quadrilateralToDraw.Count(), Quadrilateral.SIZE));
-            }
-        }
+				Utils.UI.SetTextToLabel(labelCounter,
+					$"Додайте ще {Quadrilateral.SIZE - _quadrilateralToDraw.Count()} точки щоб утворити {Quadrilateral.SIZE}-кутник ");
+			}
+		}
 
-        private void PolygonColor_Click(object sender, EventArgs e)
-        {
-            if (colorDialog1.ShowDialog() == DialogResult.OK && activeQquadrilateral != null)
-            {
-                quadrilaterals.Remove(activeQquadrilateral);
-                activeQquadrilateral.Color = colorDialog1.Color;
-                quadrilaterals.Add(activeQquadrilateral);
-                Graphic.Redraw(panelMain, graphics, quadrilaterals);
-            }
-        }
+		private void PolygonColor_Click(object sender, EventArgs e)
+		{
+			if (colorDialog1.ShowDialog() == DialogResult.OK && _activeQquadrilateral != null)
+			{
+				_quadrilaterals.Remove(_activeQquadrilateral);
+				_activeQquadrilateral.Color = colorDialog1.Color;
+				_quadrilaterals.Add(_activeQquadrilateral);
+				Graphic.Redraw(panelMain, _graphics, _quadrilaterals);
+			}
+		}
 
-        private void ShapesMenu_Click(object sender, EventArgs e)
-        {
-            UI.LoadShapesMenu(shapesMenu, ShapesMenuDropDown_Click);
-        }
+		private void ShapesMenu_Click(object sender, EventArgs e)
+		{
+			Utils.UI.LoadShapesMenu(shapesMenu, ShapesMenuDropDown_Click);
+		}
 
-        private void ShapesMenuDropDown_Click(object sender, EventArgs e)
-        {
-            string filename = (sender as ToolStripMenuItem).Text;
-            quadrilaterals.AddRange(QuadrilateralBL.LoadFigures(filename));
-            Graphic.Redraw(panelMain, graphics, quadrilaterals);
-        }
+		private void ShapesMenuDropDown_Click(object sender, EventArgs e)
+		{
+			var filename = (sender as ToolStripMenuItem)?.Text;
+			_quadrilaterals.AddRange(QuadrilateralBl.LoadFigures(filename));
+			Graphic.Redraw(panelMain, _graphics, _quadrilaterals);
+		}
 
-        private void PanelMain_Click(object sender, EventArgs e)
-        {
-            MouseEventArgs mouseEvent = e as MouseEventArgs;
-            if (mouseEvent.Button == MouseButtons.Right)
-            {
-                Point point = new Point(mouseEvent.Location.X, mouseEvent.Location.Y);
+		private void PanelMain_Click(object sender, EventArgs e)
+		{
+			var mouseEvent = e as MouseEventArgs;
+			if (mouseEvent != null && mouseEvent.Button == MouseButtons.Right)
+			{
+				var point = new Point(mouseEvent.Location.X, mouseEvent.Location.Y);
 
-                if (!isFigureChecked)
-                {
-                    activeQquadrilateral = quadrilaterals.FirstOrDefault(p => Geometry.IsInPolygon(p.ToArray(), point) == true);
-                    if (activeQquadrilateral != null)
-                    {
-                        isFigureChecked = true;
-                        UI.Show(labelFigureChecked, buttonCancel, buttonPolygonColor);
-                    }
-                }
-                else
-                {
-                    if (activeQquadrilateral == null)
-                    {
-                        throw new ApplicationException("error, this figure does not exist ... ");
-                    }
-                    quadrilaterals.Remove(activeQquadrilateral);
-                    activeQquadrilateral = QuadrilateralBL.MoveToPoint(activeQquadrilateral, point);
-                    quadrilaterals.Add(activeQquadrilateral);
-                    Graphic.Redraw(panelMain, graphics, quadrilaterals);
-                }
-            }
-        }
+				if (!_isFigureChecked)
+				{
+					_activeQquadrilateral = _quadrilaterals.FirstOrDefault(p => Geometry.IsInPolygon(p.ToArray(), point));
+					if (_activeQquadrilateral != null)
+					{
+						_isFigureChecked = true;
+						Utils.UI.Show(labelFigureChecked, buttonCancel, buttonPolygonColor);
+					}
+				}
+				else
+				{
+					if (_activeQquadrilateral == null)
+					{
+						throw new ApplicationException("error, this figure does not exist ... ");
+					}
 
-        private void ButtonCancel_Click(object sender, EventArgs e)
-        {
-            isFigureChecked = false;
-            UI.Hide(labelFigureChecked, buttonCancel, buttonPolygonColor);
-        }
+					_quadrilaterals.Remove(_activeQquadrilateral);
+					_activeQquadrilateral = QuadrilateralBl.MoveToPoint(_activeQquadrilateral, point);
+					_quadrilaterals.Add(_activeQquadrilateral);
+					Graphic.Redraw(panelMain, _graphics, _quadrilaterals);
+				}
+			}
+		}
 
-        private void InformationMenu_Click(object sender, EventArgs e)
-        {
-            if (UI.CreateInformationWindow() == DialogResult.Yes)
-            {
-                Close();
-            }
-        }
-    }
+		private void ButtonCancel_Click(object sender, EventArgs e)
+		{
+			_isFigureChecked = false;
+			Utils.UI.Hide(labelFigureChecked, buttonCancel, buttonPolygonColor);
+		}
+
+		private void InformationMenu_Click(object sender, EventArgs e)
+		{
+			if (Utils.UI.CreateInformationWindow() == DialogResult.Yes)
+			{
+				Close();
+			}
+		}
+	}
 }
